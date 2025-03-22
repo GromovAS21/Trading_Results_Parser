@@ -13,15 +13,14 @@ class LoadPages:
     def download_html_page(self) -> str:
         """Скачивает страницу по-указанному URL и возвращает её текст."""
 
-        response = requests.get(self.url_page, headers=self.headers)
-
-        if response.status_code == 200:
+        try:
+            response = requests.get(self.url_page, headers=self.headers)
             return response.content
+        except requests.exceptions.ConnectionError:
+            raise ConnectionError("Указан неверный url")
 
     def load_next_page(self):
         """Загружает следующую страницу"""
         self.page_number += 1
         self.headers["page"] = f"page-{self.page_number}"
         return self.download_html_page()
-
-
