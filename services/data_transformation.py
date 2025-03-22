@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 from pandas import DataFrame
 
@@ -5,20 +7,26 @@ from pandas import DataFrame
 class DataTransformation:
     """Класс для преобразования данных"""
 
-    def transform(self, data: DataFrame, date) -> dict:
+    @staticmethod
+    def transform(data: DataFrame, date) -> List[dict]:
         """Преобразование данных из DataFrame в нужные колонки для базы данных"""
-        data_for_db = {}
-
-        data_for_db['exchange_product_id'] = data['код_инструмента']
-        data_for_db['exchange_product_name'] = data['наименование_инструмента']
-        data_for_db['oil_id'] = data['код_инструмента'].str[:4]
-        data_for_db['delivery_basis_id'] = data['код_инструмента'].str[4:7]
-        data_for_db['delivery_basis_name'] = data['базис_поставки']
-        data_for_db['delivery_type_id'] = data['код_инструмента'].str[-1]
-        data_for_db['volume'] = data['объем_договора в единицах измерения']
-        data_for_db['total'] = data['объем_договора']
-        data_for_db['count'] = data['количество_договоров']
-        data_for_db['date'] = date
-        data_for_db['created_on'] = pd.to_datetime('now')
-        data_for_db['updated_on'] = pd.to_datetime('now')
+        data_for_db = []
+        items = {}
+        try:
+            for idx, row in data.iterrows():
+                items['exchange_product_id'] = row['код_инструмента']
+                items['exchange_product_name'] = row['наименование_инструмента']
+                items['oil_id'] = row['код_инструмента'][:4]
+                items['delivery_basis_id'] = row['код_инструмента'][4:7]
+                items['delivery_basis_name'] = row['базис_поставки']
+                items['delivery_type_id'] = row['код_инструмента'][-1]
+                items['volume'] = row['объем_договора в единицах измерения']
+                items['total'] = row['объем_договора']
+                items['count'] = row['количество_договоров']
+                items['date'] = date
+                items['created_on'] = pd.to_datetime('now')
+                items['updated_on'] = pd.to_datetime('now')
+                data_for_db.append(items)
+        except TypeError:
+            pass
         return data_for_db
