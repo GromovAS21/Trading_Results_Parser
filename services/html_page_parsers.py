@@ -38,14 +38,14 @@ class DataSearchBSParser(DataSearchInterface):
                     info_excel_tables_list.append(data)
             return info_excel_tables_list
 
-    def _search_dates(self) -> List[str]:
+    def _search_dates(self) -> List[datetime.date]:
         """Поиск дат и создание списка дат"""
         date_list = []
 
         if self.__table_info:
             for info in self.__table_info:
                 date = info.find("div", class_="accordeon-inner__item-inner__title").find("span").text
-                date_format = datetime.strptime(date, "%d.%m.%Y").strftime("%d/%m//%Y")
+                date_format = datetime.strptime(date, "%d.%m.%Y").date()
                 date_list.append(date_format)
         return date_list
 
