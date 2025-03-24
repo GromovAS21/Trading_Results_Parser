@@ -9,12 +9,16 @@ from models import TradingResults
 class DataTransformation:
     """Класс для преобразования данных"""
 
-    def transform(self, data: DataFrame, date) -> List[TradingResults]:
+    def __init__(self, data: DataFrame, date):
+        self.data = data
+        self.date = date
+
+    def transform(self) -> List[TradingResults]:
         """Преобразование данных из DataFrame в нужные колонки для базы данных"""
         data_for_db = []
         items = {}
         try:
-            for idx, row in data.iterrows():
+            for idx, row in self.data.iterrows():
                 items['exchange_product_id'] = row['код_инструмента']
                 if "Итог" in items['exchange_product_id']:
                     continue
@@ -26,7 +30,7 @@ class DataTransformation:
                 items['volume'] = int(row['объем_договора в единицах измерения'])
                 items['total'] = float(row['объем_договора'])
                 items['count'] = int(row['количество_договоров'])
-                items['date'] = date
+                items['date'] = self.date
                 items['created_on'] = pd.to_datetime('now')
                 items['updated_on'] = pd.to_datetime('now')
                 trading_results_object = self._create_trading_results_object(items)

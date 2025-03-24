@@ -29,17 +29,15 @@ def start_app(loader, html_parser, date_end):
         parse_data = search.parse_data()  # Сбор информации о ссылки на таблицу и дате
 
         counter = True
-
         for data in parse_data:
 
             if data[0] > date_end:
                 excel_table = ExcelParser(data[1])
-                transformation = DataTransformation()
-                data_trans = transformation.transform(excel_table.table, data[0])
+                data_for_db = DataTransformation(excel_table.table, data[0]).transform()
                 logging.info(f"Парсинг таблицы от {data[0].strftime('%d.%m.%Y')} года")
 
                 with uow.start() as session:
-                    session.trading_results.add_all(data_trans)
+                    session.trading_results.add_all(data_for_db)
             else:
                 counter = False
                 break

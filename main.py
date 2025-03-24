@@ -12,9 +12,14 @@ date_end = convert_date("01.01.2023")
 loader = LoadPages(url)
 parser = BSParser()
 
-if __name__ == '__main__':
+def main():
+    """Главная функция запуска приложения"""
     logging.info(f"Начало работы приложения")  # Время работы
     time_now = datetime.now()
     start_app(loader, parser, date_end)  # Запуск приложения
     logging.info("Парсинг завершен")
     logging.info(f"Время работы приложения:{datetime.now() - time_now}")  # Время работы
+
+
+if __name__ == '__main__':
+   main()
