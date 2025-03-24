@@ -9,7 +9,9 @@ engine = create_engine(DATABASE)
 
 Session = sessionmaker(bind=engine, autoflush=False)
 
+
 class Base(DeclarativeBase): pass
+
 
 def create_db():
     """Создание БД при запуске сервера"""

@@ -1,8 +1,6 @@
-import logging
 from typing import List
 
 import pandas as pd
-import sqlalchemy
 from pandas import DataFrame
 
 from models import TradingResults

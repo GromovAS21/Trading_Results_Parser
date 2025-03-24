@@ -8,7 +8,6 @@ class ExcelParser:
         self._url_excel = url_excel
         self._table = self.load_excel_file()
         self._rename_columns()
-        self._clean_data()
         self._filter_data()
 
     @property
@@ -22,19 +21,9 @@ class ExcelParser:
     def _rename_columns(self) -> None:
         """Переименовывает столбцы DataFrame."""
         self._table.columns = ["код_инструмента", "наименование_инструмента", "базис_поставки",
-                                  "объем_договора в единицах измерения", "объем_договора", "количество_договоров"
-                                  ]
-
-    def _clean_data(self) -> None:
-        """Очищает данные DataFrame от первой и последних двух строк(Итого, Итого по секции)"""
-        self._table = self.table.iloc[1:-2]
+                               "объем_договора в единицах измерения", "объем_договора", "количество_договоров"
+                               ]
 
     def _filter_data(self) -> None:
         """Фильтрует данные DataFrame от строк, где количество договоров равно 0"""
         self._table = self.table.loc[self.table["количество_договоров"].str.strip() != "-"]
-
-if __name__ == '__main__':
-    url = "https://spimex.com/upload/reports/oil_xls/oil_xls_20250320162000.xls?r=9858"
-    parser = ExcelParser(url)
-    a = parser.table
-    print(a)

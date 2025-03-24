@@ -72,14 +72,3 @@ class DataSearchBSParser(DataSearchInterface):
             for value in range(len(date_list)):
                 urls_and_date.append((date_list[value], links_list[value]))
             return urls_and_date
-
-
-if __name__ == '__main__':
-    url = "https://spimex.com/markets/oil_products/trades/results/"
-    load_page = LoadPages(url)
-    html_page = load_page.download_html_page()
-    parser = BSParser()
-    data_parser = parser.parse(html_page)
-    search_data_parser = DataSearchBSParser(data_parser)
-    tables_item = search_data_parser.parse_data()
-    print(tables_item)

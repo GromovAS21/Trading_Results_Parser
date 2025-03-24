@@ -3,6 +3,7 @@ from models import TradingResults
 
 
 class TradingResultsRepository:
+    """Класс для работы с таблицей TradingResults в базе данных"""
 
     def __init__(self, session: Session):
         self._session = session

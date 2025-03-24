@@ -1,10 +1,11 @@
 import logging
 from datetime import datetime
-from database import Session
+from database import Session, create_db
 from services.data_transformation import DataTransformation
 from services.excel_parsers import ExcelParser
 from services.html_page_parsers import DataSearchBSParser
 from uow import UnitOfWork
+from models import TradingResults
 
 uow = UnitOfWork(session_factory=Session())
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -20,6 +21,7 @@ def convert_date(date: str):
 
 def start_app(loader, html_parser, date_end):
     """Функция для запуска приложения"""
+    create_db()
     while True:
         html_page = loader.download_html_page()  # Загрузка страницы
         parse_page = html_parser.parse(html_page)  # Парсинг страницы
@@ -40,7 +42,6 @@ def start_app(loader, html_parser, date_end):
                     session.trading_results.add_all(data_trans)
             else:
                 counter = False
-                logging.info("Парсинг завершен")
                 break
 
         if not counter:
