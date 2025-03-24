@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "homeworkk-2-exercise"
+version = "0.1.0"
+description = ""
+authors = ["Anton Gromov <seed14112@yaandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.3"
+pandas = "^2.2.3"
+bs4 = "^0.0.2"
+lxml = "^5.3.1"
+xlrd = "^2.0.1"
+sqlalchemy = "^2.0.39"
+python-dotenv = "^1.0.1"
+psycopg2-binary = "^2.9.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
