@@ -7,13 +7,14 @@ from func import convert_date, start_app
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 url = "https://spimex.com/markets/oil_products/trades/results/"
-date_end = convert_date("01.01.2023")
 
 loader = LoadPages(url)
 parser = BSParser()
 
+
 def main():
     """Главная функция запуска приложения"""
+    date_end = convert_date()
     logging.info(f"Начало работы приложения")  # Время работы
     time_now = datetime.now()
     start_app(loader, parser, date_end)  # Запуск приложения
@@ -22,4 +23,4 @@ def main():
 
 
 if __name__ == '__main__':
-   main()
+    main()

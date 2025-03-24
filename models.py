@@ -15,7 +15,7 @@ class TradingResults(Base):
     delivery_basis_name = Column(String)
     delivery_type_id = Column(String)
     volume = Column(Integer)
-    total =  Column(Float)
+    total = Column(Float)
     count = Column(Integer)
     date = Column(Date)
     created_on = Column(DateTime)

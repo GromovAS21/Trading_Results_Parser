@@ -11,12 +11,14 @@ uow = UnitOfWork(session_factory=Session())
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
-def convert_date(date: str):
+def convert_date():
     """Конвертация даты в формат datetime.date"""
-    try:
-        return datetime.strptime(date, "%d.%m.%Y").date()
-    except ValueError:
-        raise ValueError("Некорректный формат даты: Введите дату в формате: ДД.ММ.ГГГГ")
+    while True:
+        input_user = input("Введите дату до какой необходимо производить поиск (формат: ДД.ММ.ГГГГ): ")
+        try:
+            return datetime.strptime(input_user, "%d.%m.%Y").date()
+        except ValueError:
+            print("Некорректный формат даты: Введите дату в формате: ДД.ММ.ГГГГ")
 
 
 def start_app(loader, html_parser, date_end):
