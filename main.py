@@ -15,7 +15,7 @@ parser = BSParser()
 def main():
     """Главная функция запуска приложения"""
     date_end = convert_date()
-    logging.info(f"Начало работы приложения")  # Время работы
+    logging.info("Начало работы приложения")  # Время работы
     time_now = datetime.now()
     start_app(loader, parser, date_end)  # Запуск приложения
     logging.info("Парсинг завершен")
