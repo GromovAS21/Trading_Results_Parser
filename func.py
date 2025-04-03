@@ -1,11 +1,10 @@
 import logging
 from datetime import datetime
-from database import Session, create_db
+from db.database import Session, create_db
 from services.data_transformation import DataTransformation
 from services.excel_parsers import ExcelParser
 from services.html_page_parsers import DataSearchBSParser
 from uow import UnitOfWork
-from models import TradingResults
 
 uow = UnitOfWork(session_factory=Session())
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
