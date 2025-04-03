@@ -3,7 +3,7 @@ from typing import List
 import pandas as pd
 from pandas import DataFrame
 
-from models import TradingResults
+from db.models import TradingResults
 
 
 class DataTransformation:

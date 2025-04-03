@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime, Float, Date
 
-from database import Base
+from db.database import Base
 
 
 class TradingResults(Base):
