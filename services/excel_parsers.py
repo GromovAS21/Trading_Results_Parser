@@ -1,3 +1,5 @@
+import io
+
 import pandas as pd
 
 
@@ -8,15 +10,15 @@ class ExcelParser:
         """Инициализирует экземпляр класса.
 
         Args:
-            file_path (str): Путь к Excel-файлу.
+            file_path (bytes): Путь к Excel-файлу.
         """
         self.file_path = file_path
-        self._table = self.read_excel_file()
+        self._table: pd.DataFrame = self.read_excel_file()
         self._rename_columns()
         self._filter_data()
 
     @property
-    def table(self):
+    def table(self) -> pd.DataFrame:
         """
         Возвращает DataFrame с нужными столбцами.
 
@@ -32,8 +34,9 @@ class ExcelParser:
         Returns:
             pd.DataFrame: DataFrame с нужными столбцами.
         """
+        file = io.BytesIO(self.file_path)
         return pd.read_excel(
-            self.file_path,
+            file,
             header=12,
             usecols=[1, 2, 3, 4, 5, 14]
         )
@@ -51,4 +54,4 @@ class ExcelParser:
     def _filter_data(self) -> None:
         """Фильтрует данные DataFrame."""
         self._table = self.table.loc[(self.table["количество_договоров"].str.strip() != "-") &
-                                     (self.table["код_инструмента"].str.strip() not in ["Итого:", "Итого по секции:"])]
+                                     (~self.table["код_инструмента"].str.strip().isin(["Итого:", "Итого по секции:"]))]

@@ -1,8 +1,5 @@
 import datetime
 
-from services.data_transformation import DataTransformation
-from services.excel_parsers import ExcelParser
-
 
 def convert_date():
     """
@@ -25,29 +22,6 @@ def convert_date():
 
             else:
                 return start_date, end_date
-            
+
         except ValueError:
             print("Некорректный формат даты: Введите дату в формате: ДД.ММ.ГГГГ")
-
-# def start_app():
-#     """Функция для запуска приложения"""
-#     while True:
-#
-#         counter = True
-#         for data in parse_data:
-#
-#             if data[0] > date_end:
-#                 excel_table = ExcelParser(data[1])
-#                 data_for_db = DataTransformation(excel_table.table, data[0]).transform()
-#                 logging.info(f"Парсинг таблицы от {data[0].strftime('%d.%m.%Y')} года")
-#
-#                 with uow.start() as session:
-#                     session.trading_results.add_all(data_for_db)
-#             else:
-#                 counter = False
-#                 break
-#
-#         if not counter:
-#             break
-#
-#         loader.page_number += 1
