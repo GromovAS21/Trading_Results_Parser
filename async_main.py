@@ -35,8 +35,8 @@ async def async_main():
             table = parser.table
             transfer = DataTransformation(table, table_date)
             transfer_data_for_db = transfer.transform()
-            with uow.start() as session:
-                session.trading_results.add_all(transfer_data_for_db)
+            async with uow.async_start() as session:
+                await session.trading_results.add_all(transfer_data_for_db)
                 logging.info(f"Загрузка информации в БД за {table_date.strftime("%d.%m.%Y")} г.")
     except StopIteration:
         logging.info("Парсинг завершен")
