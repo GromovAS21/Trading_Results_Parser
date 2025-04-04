@@ -1,20 +1,20 @@
 from contextlib import contextmanager
 
+from sqlalchemy.orm import Session
+
 from repositories import TradingResultsRepository
 
 
 class UnitOfWork:
     """Класс для управления транзакциями и сессиями базы данных."""
 
-    def __init__(self, session_factory):
+    def __init__(self, session: Session):
         """Инициализирует объект класса с заданным фабричным методом для создания сессий базы данных."""
-        self.session_factory = session_factory
-        self._session = None
+        self._session = session
 
     @contextmanager
     def start(self):
         """Контекстный менеджер для работы с базой данных."""
-        self._session = self.session_factory
         try:
             yield self
             self._session.commit()
