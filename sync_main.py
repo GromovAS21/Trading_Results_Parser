@@ -20,7 +20,7 @@ uow = UnitOfWork(db.sync_session())
 def sync_main():
     """Главная функция запуска синхронного приложения."""
     start_date, end_date = convert_date()
-    logging.info(f"Начало работы приложения {datetime.datetime.now()}")
+    logging.info(f"Начало работы синхронного приложения {datetime.datetime.now()}")
     time_now = datetime.datetime.now()
     db.sync_create_db()
     loader = LoadTable(start_date, end_date)
