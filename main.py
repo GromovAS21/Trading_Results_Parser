@@ -1,26 +1,42 @@
+import datetime
 import logging
-from datetime import datetime
-from services.html_page_parsers import BSParser
-from services.load_pages import LoadPages
-from func import convert_date, start_app
 
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+from db.database import DataBase
+from services.data_transformation import DataTransformation
+from services.excel_parsers import ExcelParser
+from services.load_tables import LoadTable
+from uow import UnitOfWork
 
-url = "https://spimex.com/markets/oil_products/trades/results/"
 
-loader = LoadPages(url)
-parser = BSParser()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
+db = DataBase()
+uow = UnitOfWork(db.session())
 
 
 def main():
-    """Главная функция запуска приложения"""
-    date_end = convert_date()
-    logging.info("Начало работы приложения")  # Время работы
-    time_now = datetime.now()
-    start_app(loader, parser, date_end)  # Запуск приложения
-    logging.info("Парсинг завершен")
-    logging.info(f"Время работы приложения:{datetime.now() - time_now}")  # Время работы
+    """Главная функция запуска приложения."""
+    start_date, end_date = (datetime.datetime(2023, 1, 1), datetime.datetime(2025, 4, 4))
+    logging.info(f"Начало работы приложения {datetime.datetime.now()}")
+    time_now = datetime.datetime.now()
+    db.create_db()
+    loader = LoadTable(start_date, end_date)
+    try:
+        while True:
+            table_info = loader.load()
+            if table_info:
+                table_date = loader.table_date
+                parser = ExcelParser(table_info)
+                table = parser.table
+                transfer = DataTransformation(table, table_date)
+                transfer_data_for_db = transfer.transform()
+                with uow.start() as session:
+                    session.trading_results.add_all(transfer_data_for_db)
+                    print(f"Загрузка информации в БД за {table_date.strftime("%d.%m.%Y")} г.")
+    except StopIteration:
+        logging.info("Парсинг завершен")
+        logging.info(f"Время работы приложения:{datetime.datetime.now() - time_now}")  # Время работы
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
