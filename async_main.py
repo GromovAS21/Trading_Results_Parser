@@ -17,16 +17,16 @@ db = DataBase()
 uow = UnitOfWork(db.async_session())
 
 
-def async_main():
+async def async_main():
     """Главная функция запуска aсинхронного приложения."""
     start_date, end_date = convert_date()
     logging.info(f"Начало работы асинхронного приложения {datetime.datetime.now()}")
     time_now = datetime.datetime.now()
-    db.async_create_db()
+    await db.async_create_db()
     loader = LoadTable(start_date, end_date)
     try:
         while True:
-            table_info = loader.sync_load()
+            table_info = await loader.async_load()
             table_date = loader.table_date
             if not table_info:
                 logging.info(f"Нет данных за {table_date.strftime('%d.%m.%Y')} г.")

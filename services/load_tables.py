@@ -2,6 +2,7 @@ import datetime
 from pathlib import Path
 from typing import Generator, Optional
 
+import aiohttp
 import requests
 
 
@@ -68,8 +69,16 @@ class LoadTable:
         return filename(self._table_date)
 
     def sync_load(self) -> bytes:
-        """Синхронно загружает файл в папку по указанному адресу."""
+        """Синхронно загружает файл по указанному адресу."""
         filename = self.get_filename()
         response = requests.get(self.SITE_URL + filename)
         if response.status_code == 200:
             return response.content
+
+    async def async_load(self) -> bytes:
+        """Асинхронно загружает файл по указанному адресу."""
+        filename = self.get_filename()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(self.SITE_URL + filename) as response:
+                if response.status == 200:
+                    return await response.read()
