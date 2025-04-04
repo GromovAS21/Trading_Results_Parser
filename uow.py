@@ -4,16 +4,16 @@ from repositories import TradingResultsRepository
 
 
 class UnitOfWork:
-    """Класс для управления транзакциями и сессиями базы данных"""
+    """Класс для управления транзакциями и сессиями базы данных."""
 
     def __init__(self, session_factory):
-
+        """Инициализирует объект класса с заданным фабричным методом для создания сессий базы данных."""
         self.session_factory = session_factory
         self._session = None
 
     @contextmanager
     def start(self):
-        """Контекстный менеджер для работы с базой данных"""
+        """Контекстный менеджер для работы с базой данных."""
         self._session = self.session_factory
         try:
             yield self
@@ -26,6 +26,5 @@ class UnitOfWork:
 
     @property
     def trading_results(self) -> TradingResultsRepository:
-        """Создает и возвращает экземпляр TradingResultsRepository
-        для работы с таблицей TradingResults в базе данных"""
+        """Создает и возвращает экземпляр TradingResultsRepository для работы в базе данных."""
         return TradingResultsRepository(self._session)

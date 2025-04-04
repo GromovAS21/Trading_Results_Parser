@@ -2,7 +2,7 @@ from db.models import TradingResults
 
 
 class TradingResultsRepository:
-    """Класс для работы с таблицей TradingResults в базе данных"""
+    """Класс для работы с таблицей TradingResults в базе данных."""
 
     def __init__(self, session):
         """

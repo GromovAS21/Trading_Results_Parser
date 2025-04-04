@@ -1,11 +1,12 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float, Date
+from sqlalchemy import Column, Date, DateTime, Float, Integer, String
 
 from db.database import Base
 
 
 class TradingResults(Base):
-    """Модель для результатов торгов"""
-    __tablename__ = 'spimex_trading_results'
+    """Модель для результатов торгов."""
+
+    __tablename__ = "spimex_trading_results"
 
     id = Column(Integer, primary_key=True)
     exchange_product_id = Column(String)

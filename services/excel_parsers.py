@@ -35,23 +35,22 @@ class ExcelParser:
             pd.DataFrame: DataFrame с нужными столбцами.
         """
         file = io.BytesIO(self.file_path)
-        return pd.read_excel(
-            file,
-            header=12,
-            usecols=[1, 2, 3, 4, 5, 14]
-        )
+        return pd.read_excel(file, header=12, usecols=[1, 2, 3, 4, 5, 14])
 
     def _rename_columns(self) -> None:
         """Переименовывает столбцы DataFrame."""
-        self._table.columns = ["код_инструмента",
-                               "наименование_инструмента",
-                               "базис_поставки",
-                               "объем_договора в единицах измерения",
-                               "объем_договора",
-                               "количество_договоров"
-                               ]
+        self._table.columns = [
+            "код_инструмента",
+            "наименование_инструмента",
+            "базис_поставки",
+            "объем_договора в единицах измерения",
+            "объем_договора",
+            "количество_договоров",
+        ]
 
     def _filter_data(self) -> None:
         """Фильтрует данные DataFrame."""
-        self._table = self.table.loc[(self.table["количество_договоров"].str.strip() != "-") &
-                                     (~self.table["код_инструмента"].str.strip().isin(["Итого:", "Итого по секции:"]))]
+        self._table = self.table.loc[
+            (self.table["количество_договоров"].str.strip() != "-")
+            & (~self.table["код_инструмента"].str.strip().isin(["Итого:", "Итого по секции:"]))
+        ]
