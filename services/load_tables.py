@@ -15,13 +15,29 @@ class LoadTable:
     def __init__(self, start_date, end_date):
         self._start_date: datetime.datetime = start_date
         self._end_date: datetime.datetime = end_date
-        self._current_date: Generator = self._gen_date()
+        self._current_date: Optional[datetime.datetime] = None
+        self._date_generator: Generator = self._gen_date()
         self._path_file: Optional[Path] = None
 
     @property
     def get_path_file(self) -> Path:
-        """Получение пути к файлу."""
+        """
+        Получение пути к файлу.
+
+        Returns:
+            Path: Путь к файлу
+        """
         return self._path_file
+
+    @property
+    def get_current_date(self) -> datetime.datetime:
+        """
+        Получение текущей даты.
+
+        Returns:
+            datetime.datetime: Текущая дата
+        """
+        return self._current_date
 
     def _gen_date(self) -> Generator:
         """
@@ -43,7 +59,8 @@ class LoadTable:
             str: Имя файла
         """
         filename = lambda x: "oil_xls_{}162000.xls".format(x.strftime("%Y%m%d"))
-        return filename(next(self._current_date))
+        self._current_date = next(self._date_generator)
+        return filename(self._current_date)
 
     def load(self) -> None:
         """
@@ -65,12 +82,3 @@ class LoadTable:
         self._path_file = Path(__file__).parent.parent / "load_table" / filename
         with open(self._path_file, "wb") as file:
             file.write(request.content)
-
-
-if __name__ == "__main__":
-    loader = LoadTable(datetime.datetime(2023, 1, 1), datetime.datetime.today())
-    while True:
-        loader.load()
-
-
-
