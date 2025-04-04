@@ -1,3 +1,4 @@
+import datetime
 from typing import List
 
 import pandas as pd
@@ -7,9 +8,16 @@ from db.models import TradingResults
 
 
 class DataTransformation:
-    """Класс для преобразования данных"""
+    """Класс для преобразования данных."""
 
-    def __init__(self, data: DataFrame, date):
+    def __init__(self, data: DataFrame, date: datetime.datetime):
+        """
+        Инициализация класса DataTransformation.
+
+        Args:
+            data (DataFrame): Данные для преобразования.
+            date (datetime.datetime): Дата, таблицы.
+        """
         self.data = data
         self.date = date
 
@@ -18,10 +26,8 @@ class DataTransformation:
         data_for_db = []
         items = {}
         try:
-            for idx, row in self.data.iterrows():
+            for _, row in self.data.iterrows():
                 items['exchange_product_id'] = row['код_инструмента']
-                if "Итог" in items['exchange_product_id']:
-                    continue
                 items['exchange_product_name'] = row['наименование_инструмента']
                 items['oil_id'] = row['код_инструмента'][:4]
                 items['delivery_basis_id'] = row['код_инструмента'][4:7]
@@ -41,5 +47,13 @@ class DataTransformation:
 
     @staticmethod
     def _create_trading_results_object(data):
-        """Функция для создания объекта TradingResults"""
+        """
+        Функция для создания объекта TradingResults.
+
+        Args:
+            data (dict): Данные для создания объекта.
+
+        Returns:
+            TradingResults: Объект TradingResults.
+        """
         return TradingResults(**data)
