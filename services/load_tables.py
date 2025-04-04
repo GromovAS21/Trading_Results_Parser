@@ -67,8 +67,8 @@ class LoadTable:
         self._table_date = next(self._date_generator)
         return filename(self._table_date)
 
-    def load(self) -> bytes:
-        """Загружает файл в папку по указанному адресу."""
+    def sync_load(self) -> bytes:
+        """Синхронно загружает файл в папку по указанному адресу."""
         filename = self.get_filename()
         response = requests.get(self.SITE_URL + filename)
         if response.status_code == 200:

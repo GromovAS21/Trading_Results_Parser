@@ -6,13 +6,13 @@ import pandas as pd
 class ExcelParser:
     """Класс для парсинга Excel-файлов."""
 
-    def __init__(self, file_path):
+    def __init__(self, file_bytes: bytes):
         """Инициализирует экземпляр класса.
 
         Args:
-            file_path (bytes): Путь к Excel-файлу.
+            file_bytes (bytes): Путь к Excel-файлу.
         """
-        self.file_path = file_path
+        self.file_bytes = file_bytes
         self._table: pd.DataFrame = self.read_excel_file()
         self._rename_columns()
         self._filter_data()
@@ -34,7 +34,7 @@ class ExcelParser:
         Returns:
             pd.DataFrame: DataFrame с нужными столбцами.
         """
-        file = io.BytesIO(self.file_path)
+        file = io.BytesIO(self.file_bytes)  # Преобразуем байты в объект io.BytesIO
         return pd.read_excel(file, header=12, usecols=[1, 2, 3, 4, 5, 14])
 
     def _rename_columns(self) -> None:
