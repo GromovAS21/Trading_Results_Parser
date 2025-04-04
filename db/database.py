@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import DeclarativeBase
 
-from config import DB_USER, DB_PASSWORD, DB_NAME, DB_HOST, DB_DRIVER
+from db.config import DB_USER, DB_PASSWORD, DB_NAME, DB_HOST, DB_DRIVER
 
 
 class DataBase:
