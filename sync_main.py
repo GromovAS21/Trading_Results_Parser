@@ -17,7 +17,7 @@ db = DataBase()
 uow = UnitOfWork(db.sync_session())
 
 
-def sync_main():
+def sync_main() -> None:
     """Главная функция запуска синхронного приложения."""
     start_date, end_date = convert_date()
     date_generator = gen_date(start_date)
