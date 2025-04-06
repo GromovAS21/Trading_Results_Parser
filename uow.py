@@ -11,7 +11,12 @@ class UnitOfWork:
     """Класс для управления транзакциями и сессиями базы данных."""
 
     def __init__(self, session: Union[Session, AsyncSession]):
-        """Инициализирует объект класса с заданным фабричным методом для создания сессий базы данных."""
+        """
+        Инициализирует экземпляр класса с переданной сессией базы данных.
+
+        Args:
+            session: Сессия базы данных (Session или AsyncSession).
+        """
         self._session = session
 
     @contextmanager
@@ -40,5 +45,5 @@ class UnitOfWork:
 
     @property
     def trading_results(self) -> TradingResultsRepository:
-        """Создает и возвращает экземпляр TradingResultsRepository для работы в базе данных."""
+        """Создает и возвращает экземпляр TradingResultsRepository."""
         return TradingResultsRepository(self._session)

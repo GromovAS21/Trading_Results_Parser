@@ -14,15 +14,15 @@ class TradingResultsRepository:
         Инициализация репозитория.
 
         Args:
-            session (Session): Объект сессии для работы с базой данных.
+            session (Session, AsyncSession): Объект сессии для работы с базой данных.
         """
         self._session: Union[Session, AsyncSession] = session
 
-    async def add_all(self, results: list[TradingResults]):
+    def add_all(self, results: list[TradingResults]):
         """
         Добавить все записи в базу данных.
 
         Args:
             results (list[TradingResults]): Список записей для добавления.
         """
-        await self._session.add_all(results)
+        self._session.add_all(results)
