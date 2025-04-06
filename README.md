@@ -8,15 +8,18 @@
 
 Для работы приложения используются следующие технологии и зависимости:
 
-- **Python** `^3.12`
-- **Requests** `^2.32.3` 
-- **Pandas** `^2.2.3`
-- **BeautifulSoup4 (bs4)** `^0.0.2` 
-- **lxml** `^5.3.1` 
-- **xlrd** `^2.0.1` 
-- **SQLAlchemy** `^2.0.39` 
-- **python-dotenv** `^1.0.1
-- **psycopg2-binary** `^2.9.10`
+- **Python** = `^3.12`
+- **Requests** = `^2.32.3` 
+- **Pandas** = `^2.2.3`
+- **lxml** = `^5.3.1` 
+- **xlrd** = `^2.0.1` 
+- **SQLAlchemy** = `^2.0.39` 
+- **python-dotenv** = `^1.0.1`
+- **psycopg2-binary** = `^2.9.10`
+- **aiohttp** = `^3.11.16`
+- **asyncio** = `^3.4.3`
+- **asyncpg** = `^0.30.0`
+- **greenlet** = `^3.1.1`
 
 ---
 
@@ -69,9 +72,14 @@
 - Переименуйте файл [.env.sample](.env.sample) в [.env](.env.sample) и заполните все переменные в этом файле.
 
 ### 5. Запуск скрипта
-
+  - Синхронный запуск
    ```bash
-   python main.py
+   python sync_main.py
+   ```
+
+  - Асинхронный запуск
+   ```bash
+   python async_main.py
    ```
 --- 
 ## Цитата

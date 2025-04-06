@@ -1,4 +1,8 @@
-from contextlib import contextmanager
+from contextlib import asynccontextmanager, contextmanager
+from typing import Union
+
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 
 from repositories import TradingResultsRepository
 
@@ -6,15 +10,18 @@ from repositories import TradingResultsRepository
 class UnitOfWork:
     """Класс для управления транзакциями и сессиями базы данных."""
 
-    def __init__(self, session_factory):
-        """Инициализирует объект класса с заданным фабричным методом для создания сессий базы данных."""
-        self.session_factory = session_factory
-        self._session = None
+    def __init__(self, session: Union[Session, AsyncSession]):
+        """
+        Инициализирует экземпляр класса с переданной сессией базы данных.
+
+        Args:
+            session: Сессия базы данных (Session или AsyncSession).
+        """
+        self._session = session
 
     @contextmanager
-    def start(self):
-        """Контекстный менеджер для работы с базой данных."""
-        self._session = self.session_factory
+    def sync_start(self):
+        """Синхронный контекстный менеджер для работы с базой данных."""
         try:
             yield self
             self._session.commit()
@@ -24,7 +31,19 @@ class UnitOfWork:
         finally:
             self._session.close()
 
+    @asynccontextmanager
+    async def async_start(self):
+        """Асинхронный контекстный менеджер для работы с базой данных."""
+        try:
+            yield self
+            await self._session.commit()
+        except Exception as e:
+            await self._session.rollback()
+            raise e
+        finally:
+            await self._session.close()
+
     @property
     def trading_results(self) -> TradingResultsRepository:
-        """Создает и возвращает экземпляр TradingResultsRepository для работы в базе данных."""
+        """Создает и возвращает экземпляр TradingResultsRepository."""
         return TradingResultsRepository(self._session)
