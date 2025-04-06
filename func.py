@@ -1,8 +1,8 @@
 import datetime
-from typing import Iterator
+from typing import Iterator, Tuple
 
 
-def convert_date():
+def convert_date() -> Tuple[datetime.date, datetime.date]:
     """
     Конвертация даты в формат datetime.date.
 
@@ -29,12 +29,12 @@ def convert_date():
             print("Некорректный формат даты: Введите дату в формате: ДД.ММ.ГГГГ")
 
 
-def gen_date(start_date: datetime.datetime) -> Iterator[datetime.datetime]:
+def gen_date(start_date: datetime.date) -> Iterator[datetime.date]:
     """
     Генератор дат указанного диапазона.
 
     Returns:
-        Iterator[datetime.datetime]: Дата для загрузки файла
+        Iterator[datetime.date]: Дата для загрузки файла
     """
     current_date = start_date
     while True:

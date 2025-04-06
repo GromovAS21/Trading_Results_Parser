@@ -19,7 +19,7 @@ db = DataBase()
 semaphore = asyncio.Semaphore(int(MAX_CONCURRENT_TASKS))  # Ограничение на количество одновременных запросов
 
 
-async def process_single_date(loader: LoadTable, date: datetime.datetime):
+async def process_single_date(loader: LoadTable, date: datetime.date) -> None:
     """
     Обрабатывает одну дату и сохраняет в БД.
 
@@ -44,7 +44,7 @@ async def process_single_date(loader: LoadTable, date: datetime.datetime):
             logging.info(f"Загрузка информации в БД за {date.strftime("%d.%m.%Y")} г.")
 
 
-async def async_main():
+async def async_main() -> None:
     """Главная функция запуска aсинхронного приложения."""
     start_date, end_date = convert_date()
     date_generator = gen_date(start_date)

@@ -10,7 +10,7 @@ from db.models import TradingResults
 class DataTransformation:
     """Класс для преобразования данных."""
 
-    def __init__(self, data: DataFrame, date: datetime.datetime):
+    def __init__(self, data: DataFrame, date: datetime.date):
         """
         Инициализация класса DataTransformation.
 
@@ -22,7 +22,12 @@ class DataTransformation:
         self.date = date
 
     def transform(self) -> List[TradingResults]:
-        """Преобразование данных из DataFrame в нужные колонки для базы данных."""
+        """
+        Преобразование данных из DataFrame в нужные колонки для базы данных.
+
+        Returns:
+            List[TradingResults]: Список объектов TradingResults.
+        """
         data_for_db = []
         items = {}
         try:

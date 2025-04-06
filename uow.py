@@ -20,7 +20,7 @@ class UnitOfWork:
         self._session = session
 
     @contextmanager
-    def sync_start(self):
+    def sync_start(self) -> "UnitOfWork":
         """Синхронный контекстный менеджер для работы с базой данных."""
         try:
             yield self
@@ -32,7 +32,7 @@ class UnitOfWork:
             self._session.close()
 
     @asynccontextmanager
-    async def async_start(self):
+    async def async_start(self) -> "UnitOfWork":
         """Асинхронный контекстный менеджер для работы с базой данных."""
         try:
             yield self
