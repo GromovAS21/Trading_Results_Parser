@@ -19,7 +19,7 @@ class DataBase:
         self._async_session: async_sessionmaker = async_sessionmaker(bind=self._async_engine, autoflush=False)
 
     @property
-    def sync_session(self):
+    def sync_session(self) -> sessionmaker:
         """
         Возвращает синхронную сессию.
 
@@ -29,7 +29,7 @@ class DataBase:
         return self._sync_session
 
     @property
-    def async_session(self):
+    def async_session(self) -> async_sessionmaker:
         """
         Возвращает aсинхронную сессию.
 
@@ -38,12 +38,12 @@ class DataBase:
         """
         return self._async_session
 
-    def sync_create_db(self):
+    def sync_create_db(self) -> None:
         """Создание синхронной БД."""
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
 
-    async def async_create_db(self):
+    async def async_create_db(self) -> None:
         """Создание асинхронной БД."""
         async with self._async_engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
