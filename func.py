@@ -1,4 +1,5 @@
 import datetime
+from typing import Iterator
 
 
 def convert_date():
@@ -26,3 +27,16 @@ def convert_date():
 
         except ValueError:
             print("Некорректный формат даты: Введите дату в формате: ДД.ММ.ГГГГ")
+
+
+def gen_date(start_date: datetime.datetime) -> Iterator[datetime.datetime]:
+    """
+    Генератор дат указанного диапазона.
+
+    Returns:
+        Iterator[datetime.datetime]: Дата для загрузки файла
+    """
+    current_date = start_date
+    while True:
+        yield current_date
+        current_date += datetime.timedelta(days=1)

@@ -1,17 +1,22 @@
+from typing import Union
+
+from requests import Session
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from db.models import TradingResults
 
 
 class TradingResultsRepository:
     """Класс для работы с таблицей TradingResults в базе данных."""
 
-    def __init__(self, session):
+    def __init__(self, session: Union[Session, AsyncSession]):
         """
         Инициализация репозитория.
 
         Args:
-            session (Session): Объект сессии для работы с базой данных.
+            session (Session, AsyncSession): Объект сессии для работы с базой данных.
         """
-        self._session = session
+        self._session: Union[Session, AsyncSession] = session
 
     def add_all(self, results: list[TradingResults]):
         """
