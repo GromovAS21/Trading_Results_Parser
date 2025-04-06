@@ -45,7 +45,7 @@ class DataBase:
 
     async def async_create_db(self):
         """Создание асинхронной БД."""
-        with self._async_engine.begin() as conn:
+        async with self._async_engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
             await conn.run_sync(Base.metadata.create_all)
 
