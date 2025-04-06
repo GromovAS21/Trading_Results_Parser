@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, engine
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-from db.config import DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
+from config import DB_HOST, DB_NAME, DB_PASSWORD, DB_USER
 
 
 class DataBase:
