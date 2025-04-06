@@ -10,7 +10,6 @@ class LoadTable:
     """Класс для загрузки Exel таблицы c сайта spimex.com."""
 
     SITE_URL = "https://spimex.com/upload/reports/oil_xls/"
-    COUNTER_END_DATE = True
 
     def __init__(self, current_date: datetime.datetime):
         """

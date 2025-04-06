@@ -27,25 +27,21 @@ async def process_single_date(loader: LoadTable, date: datetime.datetime):
         loader (LoadTable): Объект для загрузки данных из файла.
         date (datetime.datetime): Дата для обработки.
     """
-    try:
-        async with asyncio.timeout(60):
-            async with semaphore:
-                uow = UnitOfWork(db.async_session())
-                table_info = await loader.async_load()
-                if not table_info:
-                    logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
-                    return  # Если нет данных, пропускаем эту дату
+    async with semaphore:
+        uow = UnitOfWork(db.async_session())
+        table_info = await loader.async_load()
+        if not table_info:
+            logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
+            return  # Если нет данных, пропускаем эту дату
 
-                parser = ExcelParser(table_info)
-                table = parser.table
-                transfer = DataTransformation(table, date)
-                transfer_data_for_db = transfer.transform()
+        parser = ExcelParser(table_info)
+        table = parser.table
+        transfer = DataTransformation(table, date)
+        transfer_data_for_db = transfer.transform()
 
-                async with uow.async_start() as session:
-                    session.trading_results.add_all(transfer_data_for_db)
-                    logging.info(f"Загрузка информации в БД за {date.strftime("%d.%m.%Y")} г.")
-    except asyncio.TimeoutError:
-        logging.error(f"Превышено время ожидания для {date.strftime('%d.%m.%Y')} г.")
+        async with uow.async_start() as session:
+            session.trading_results.add_all(transfer_data_for_db)
+            logging.info(f"Загрузка информации в БД за {date.strftime("%d.%m.%Y")} г.")
 
 
 async def async_main():
