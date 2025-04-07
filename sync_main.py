@@ -35,10 +35,12 @@ def sync_main() -> None:
         if not table_info:
             logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
             continue
+
         parser = ExcelParser(table_info)
         table = parser.table
         transfer = DataTransformation(table, date)
         transfer_data_for_db = transfer.transform()
+
         with uow.sync_start() as session:
             session.trading_results.add_all(transfer_data_for_db)
             logging.info(f"Загрузка информации в БД за {date.strftime("%d.%m.%Y")} г.")
