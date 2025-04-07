@@ -7,7 +7,7 @@ from db.database import AsyncDataBase
 from func import convert_date, gen_date
 from services.data_transformation import DataTransformation
 from services.excel_parsers import ExcelParser
-from services.load_tables import LoadTable
+from services.loader_tables import AsyncLoader
 from uow import UnitOfWork
 
 
@@ -19,17 +19,17 @@ db = AsyncDataBase()
 semaphore = asyncio.Semaphore(int(MAX_CONCURRENT_TASKS))  # Ограничение на количество одновременных запросов
 
 
-async def process_single_date(loader: LoadTable, date: datetime.date) -> None:
+async def process_single_date(loader: AsyncLoader, date: datetime.date) -> None:
     """
     Обрабатывает одну дату и сохраняет в БД.
 
     Args:
-        loader (LoadTable): Объект для загрузки данных из файла.
+        loader (AsyncLoader): Объект для загрузки данных из файла.
         date (datetime.datetime): Дата для обработки.
     """
     async with semaphore:
         uow = UnitOfWork(db.session())
-        table_info = await loader.async_load()
+        table_info = await loader.load()
         if not table_info:
             logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
             return  # Если нет данных, пропускаем эту дату
@@ -59,7 +59,7 @@ async def async_main() -> None:
         if date > end_date:  # Проверяем, не достигли ли мы конечной даты
             break
 
-        loader = LoadTable(date)
+        loader = AsyncLoader(date)
         task = asyncio.create_task(process_single_date(loader, date))
         tasks.append(task)
 

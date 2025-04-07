@@ -5,7 +5,7 @@ from db.database import SyncDataBase
 from func import convert_date, gen_date
 from services.data_transformation import DataTransformation
 from services.excel_parsers import ExcelParser
-from services.load_tables import LoadTable
+from services.loader_tables import SyncLoader
 from uow import UnitOfWork
 
 
@@ -29,9 +29,9 @@ def sync_main() -> None:
         date = next(date_generator)  # Получаем следующую дату
         if date > end_date:  # Проверяем, не достигли ли мы конечной даты
             break
-        loader = LoadTable(date)
+        loader = SyncLoader(date)
 
-        table_info = loader.sync_load()
+        table_info = loader.load()
         if not table_info:
             logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
             continue
