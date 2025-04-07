@@ -1,7 +1,7 @@
 import datetime
 import logging
 
-from db.database import DataBase
+from db.database import SyncDataBase
 from func import convert_date, gen_date
 from services.data_transformation import DataTransformation
 from services.excel_parsers import ExcelParser
@@ -13,8 +13,8 @@ logging.basicConfig(
     level=logging.INFO, format="\033[97m%(asctime)s\033[0m - \033[97m%(levelname)s\033[0m - \033[92m%(message)s\033[0m"
 )
 
-db = DataBase()
-uow = UnitOfWork(db.sync_session())
+db = SyncDataBase()
+uow = UnitOfWork(db.session())
 
 
 def sync_main() -> None:
@@ -23,7 +23,7 @@ def sync_main() -> None:
     date_generator = gen_date(start_date)
     logging.info(f"Начало работы синхронного приложения {datetime.datetime.now()}")
     time_now = datetime.datetime.now()
-    db.sync_create_db()
+    db.create_db()
 
     while True:
         date = next(date_generator)  # Получаем следующую дату

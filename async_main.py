@@ -3,7 +3,7 @@ import datetime
 import logging
 
 from config import MAX_CONCURRENT_TASKS
-from db.database import DataBase
+from db.database import AsyncDataBase
 from func import convert_date, gen_date
 from services.data_transformation import DataTransformation
 from services.excel_parsers import ExcelParser
@@ -15,7 +15,7 @@ logging.basicConfig(
     level=logging.INFO, format="\033[97m%(asctime)s\033[0m - \033[97m%(levelname)s\033[0m - \033[92m%(message)s\033[0m"
 )
 
-db = DataBase()
+db = AsyncDataBase()
 semaphore = asyncio.Semaphore(int(MAX_CONCURRENT_TASKS))  # Ограничение на количество одновременных запросов
 
 
@@ -28,7 +28,7 @@ async def process_single_date(loader: LoadTable, date: datetime.date) -> None:
         date (datetime.datetime): Дата для обработки.
     """
     async with semaphore:
-        uow = UnitOfWork(db.async_session())
+        uow = UnitOfWork(db.session())
         table_info = await loader.async_load()
         if not table_info:
             logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
@@ -50,7 +50,7 @@ async def async_main() -> None:
     date_generator = gen_date(start_date)
     logging.info(f"Начало работы асинхронного приложения {datetime.datetime.now()}")
     time_now = datetime.datetime.now()
-    await db.async_create_db()
+    await db.create_db()
 
     tasks = []
 
