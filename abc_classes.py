@@ -15,7 +15,7 @@ class AbstractDB(ABC):
         pass
 
     @abstractmethod
-    def _create_db(self) -> None:
+    def create_db(self) -> None:
         """Создает структуру БД."""
         pass
 

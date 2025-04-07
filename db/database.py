@@ -32,7 +32,7 @@ class SyncDataBase(AbstractDB):
         """
         return self._session
 
-    def _create_db(self) -> None:
+    def create_db(self) -> None:
         """Создание синхронной БД."""
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
@@ -58,7 +58,7 @@ class AsyncDataBase(AbstractDB):
         """
         return self._session
 
-    async def _create_db(self) -> None:
+    async def create_db(self) -> None:
         """Создание асинхронной БД."""
         async with self._engine.begin() as conn:
             await conn.run_sync(Base.metadata.drop_all)
