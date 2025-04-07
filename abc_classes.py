@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from pathlib import Path
 from typing import Union
 
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -22,11 +21,6 @@ class AbstractDB(ABC):
 
 class AbstractLoader(ABC):
     """Абстрактный класс для загрузки таблиц."""
-
-    @abstractmethod
-    def _path_file(self) -> Path:
-        """Возвращает путь к файлу с данными."""
-        pass
 
     @abstractmethod
     def _get_filename(self) -> str:
