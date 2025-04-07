@@ -30,8 +30,11 @@ def sync_main() -> None:
         if date > end_date:  # Проверяем, не достигли ли мы конечной даты
             break
         loader = SyncLoader(date)
-
-        table_info = loader.load()
+        try:
+            table_info = loader.load()
+        except TimeoutError:
+            logging.info(f"Превышено время ожидания загрузки данных за {date.strftime('%d.%m.%Y')} г.")
+            continue
         if not table_info:
             logging.info(f"Нет данных за {date.strftime('%d.%m.%Y')} г.")
             continue
