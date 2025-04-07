@@ -59,9 +59,12 @@ async def async_main() -> None:
         if date > end_date:  # Проверяем, не достигли ли мы конечной даты
             break
 
-        loader = AsyncLoader(date)
-        task = asyncio.create_task(process_single_date(loader, date))
-        tasks.append(task)
+        try:
+            loader = AsyncLoader(date)
+            task = asyncio.create_task(process_single_date(loader, date))
+            tasks.append(task)
+        except TimeoutError:
+            logging.error(f"Превышено время ожидания загрузки данных за {date.strftime('%d.%m.%Y')} г.")
 
     await asyncio.gather(*tasks)
 
