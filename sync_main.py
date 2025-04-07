@@ -3,9 +3,9 @@ import logging
 
 from db.database import SyncDataBase
 from func import convert_date, gen_date
-from services.data_transformation import DataTransformation
-from services.excel_parsers import ExcelParser
-from services.loader_tables import SyncLoader
+from services.date_transform import DataTransformer
+from services.loaders import SyncLoader
+from services.parsers import ExcelParser
 from uow import UnitOfWork
 
 
@@ -38,8 +38,8 @@ def sync_main() -> None:
 
         parser = ExcelParser(table_info)
         table = parser.table
-        transfer = DataTransformation(table, date)
-        transfer_data_for_db = transfer.transform()
+        transform = DataTransformer(table, date)
+        transfer_data_for_db = transform.transform()
 
         with uow.sync_start() as session:
             session.trading_results.add_all(transfer_data_for_db)

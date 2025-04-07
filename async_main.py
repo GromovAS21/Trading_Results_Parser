@@ -5,9 +5,9 @@ import logging
 from config import MAX_CONCURRENT_TASKS
 from db.database import AsyncDataBase
 from func import convert_date, gen_date
-from services.data_transformation import DataTransformation
-from services.excel_parsers import ExcelParser
-from services.loader_tables import AsyncLoader
+from services.date_transform import DataTransformer
+from services.loaders import AsyncLoader
+from services.parsers import ExcelParser
 from uow import UnitOfWork
 
 
@@ -36,7 +36,7 @@ async def process_single_date(loader: AsyncLoader, date: datetime.date) -> None:
 
         parser = ExcelParser(table_info)
         table = parser.table
-        transfer = DataTransformation(table, date)
+        transfer = DataTransformer(table, date)
         transfer_data_for_db = transfer.transform()
 
         async with uow.async_start() as session:

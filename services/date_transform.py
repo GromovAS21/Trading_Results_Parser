@@ -7,19 +7,19 @@ from pandas import DataFrame
 from db.models import TradingResults
 
 
-class DataTransformation:
+class DataTransformer:
     """Класс для преобразования данных."""
 
     def __init__(self, data: DataFrame, date: datetime.date):
         """
-        Инициализация класса DataTransformation.
+        Инициализация класса DataTransformer.
 
         Args:
             data (DataFrame): Данные для преобразования.
             date (datetime.datetime): Дата, таблицы.
         """
-        self.data = data
-        self.date = date
+        self.data: DataFrame = data
+        self.date: datetime.date = date
 
     def transform(self) -> List[TradingResults]:
         """
@@ -28,7 +28,7 @@ class DataTransformation:
         Returns:
             List[TradingResults]: Список объектов TradingResults.
         """
-        data_for_db = []
+        data_for_db = []  # Список для хранения объектов TradingResults
         items = {}
         try:
             for _, row in self.data.iterrows():
@@ -44,7 +44,7 @@ class DataTransformation:
                 items["date"] = self.date
                 items["created_on"] = pd.to_datetime("now")
                 items["updated_on"] = pd.to_datetime("now")
-                trading_results_object = self._create_trading_results_object(items)
+                trading_results_object = self._create_trading_results_object(items)  # Создание объекта TradingResults
                 data_for_db.append(trading_results_object)
         except (TypeError, ValueError):
             pass

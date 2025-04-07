@@ -13,7 +13,7 @@ class ExcelParser:
             file_bytes (bytes): Путь к Excel-файлу.
         """
         self.file_bytes = file_bytes
-        self._table: pd.DataFrame = self.read_excel_file()
+        self._table: pd.DataFrame = self._read_excel_file()
         self._rename_columns()
         self._filter_data()
 
@@ -27,7 +27,7 @@ class ExcelParser:
         """
         return self._table
 
-    def read_excel_file(self) -> pd.DataFrame:
+    def _read_excel_file(self) -> pd.DataFrame:
         """
         Читает Excel-файл и возвращает DataFrame с нужными столбцами.
 
