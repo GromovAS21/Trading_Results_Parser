@@ -51,7 +51,7 @@ class DataTransformer:
         return data_for_db
 
     @staticmethod
-    def _create_trading_results_object(data):
+    def _create_trading_results_object(data: dict) -> TradingResults:
         """
         Функция для создания объекта TradingResults.
 

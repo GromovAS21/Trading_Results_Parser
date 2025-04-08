@@ -18,7 +18,7 @@ class TradingResultsRepository:
         """
         self._session: Union[Session, AsyncSession] = session
 
-    def add_all(self, results: list[TradingResults]):
+    def add_all(self, results: list[TradingResults]) -> None:
         """
         Добавить все записи в базу данных.
 
